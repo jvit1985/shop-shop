@@ -27,7 +27,7 @@ function ProductList() {
       idbPromise('products', 'get').then((products) => {
         dispatch({
           type: UPDATE_PRODUCTS,
-          products: products,
+          products: products
         });
       });
     }
@@ -38,7 +38,7 @@ function ProductList() {
       return state.products;
     }
 
-    return state.products.filter(product => product.category._id === currentCategory);
+    return state.products.filter((product) => product.category._id === currentCategory);
   }
 
   return (
