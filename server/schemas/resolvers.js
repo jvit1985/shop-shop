@@ -55,10 +55,13 @@ const resolvers = {
     checkout: async (parent, args, context) => {
       const url = new URL(context.headers.referer).origin;
       const order = new Order({ products: args.products });
+      console.log(args.products);
       const line_items = [];
-      const { products } = await order.populate('products');
+      const { products } = await order.populate({path:'products', select: "name description images price"});
+  
       
       for (let i = 0; i < products.length; i++) {
+        console.log('product', products[i]);
         //generate product id
         const product = await stripe.products.create({
           name: products[i].name,
@@ -79,6 +82,7 @@ const resolvers = {
           quantity: 1
         });
       }
+      console.log('checkout');
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items,
